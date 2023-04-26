@@ -56,12 +56,39 @@ export default function TodoList() {
     setCurrentTask(null)
   }
 
+  const deleteTask = (id: string) => {
+    // while you are editting but want to delete
+    if (currentTask) {
+      setCurrentTask(null)
+    }
+    setTodo((prev) => {
+      const findedIndexTask = prev.findIndex((todo) => todo.id === id)
+      if (findedIndexTask > -1) {
+        const result = [...prev]
+        result.splice(findedIndexTask, 1)
+        return result
+      }
+      return prev
+    })
+  }
+
   return (
     <div className={styles.todoList}>
       <div className={styles.todoListContainer}>
         <TaskInput addTodo={addTodo} currentTask={currentTask} editTask={editTask} finishEditTask={finishEditTask} />
-        <TaskList todo={todoTask} handleDoneTask={handleDoneTask} startEditTask={startEditTask} />
-        <TaskList doneTaskList todo={doneTask} handleDoneTask={handleDoneTask} startEditTask={startEditTask} />
+        <TaskList
+          todo={todoTask}
+          handleDoneTask={handleDoneTask}
+          startEditTask={startEditTask}
+          deleteTask={deleteTask}
+        />
+        <TaskList
+          doneTaskList
+          todo={doneTask}
+          handleDoneTask={handleDoneTask}
+          startEditTask={startEditTask}
+          deleteTask={deleteTask}
+        />
       </div>
     </div>
   )
